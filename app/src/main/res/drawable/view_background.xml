@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#1A1C2B" /> <!-- Màu sắc của hình dạng -->
+    <size android:width="50dp" android:height="50dp" /> <!-- Kích thước của hình dạng -->
+    <corners android:radius="20dp" />
+</shape>

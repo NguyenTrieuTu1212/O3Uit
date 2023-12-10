@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Hình dạng (shape) -->
+    <item>
+        <shape
+            android:shape="oval">
+            <solid android:color="#3E3E3E" />
+            <size android:width="20dp" android:height="20dp" />
+        </shape>
+    </item>
+
+    <!-- Ảnh -->
+    <item
+        android:drawable="@drawable/menu"
+        android:height="20dp"
+        android:width="20dp"
+        android:top="5dp"
+        android:gravity="center"
+        />
+
+
+</layer-list>

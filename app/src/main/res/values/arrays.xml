@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Attribute_list" >
+        <item>Temperature</item>
+        <item>Humidity</item>
+        <item>WindSpeed</item>
+    </string-array>
+
+
+    <string-array name="Timer_list" >
+        <item>Hour</item>
+        <item>Day</item>
+        <item>Week</item>
+        <item>Month</item>
+        <item>Year</item>
+    </string-array>
+</resources>
