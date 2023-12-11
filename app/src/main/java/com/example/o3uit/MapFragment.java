@@ -90,8 +90,13 @@ public class MapFragment extends Fragment {
     Point pointUser1;
     Point pointUser2;
 
-
+    // For test maker (Light marker)
     TextView txtEmailInfor,txtBrightness,txtcolourTemperature,txtonOff;
+
+    // For default weather marker
+
+    TextView txtHumidity,txtManufacturer,txtPlace,txtRainFall,txtTempInfor,txtWindDirection,txtWindSpeed;
+
 
 
 
@@ -243,7 +248,6 @@ public class MapFragment extends Fragment {
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
-
         return bitmap;
     }
 
@@ -291,10 +295,6 @@ public class MapFragment extends Fragment {
     }
 
 
-
-
-
-
     private void showDialog(String idUser) {
 
         final Dialog dialog = new Dialog(getActivity());
@@ -311,9 +311,30 @@ public class MapFragment extends Fragment {
             txtBrightness.setText(nearbyUsers2.getBrightness());
             txtcolourTemperature.setText(nearbyUsers2.getColourTemperature());
             txtonOff.setText(nearbyUsers2.getOnOff());
-            dialog.show();
-        }
 
+        }
+        if(idUser.equals(assetIdDefautWeather)){
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.bottom_sheet_for_default_weather);
+
+            txtHumidity=dialog.findViewById(R.id.txtHumidity);
+            txtManufacturer = dialog.findViewById(R.id.txtManufacturer);
+            txtPlace = dialog.findViewById(R.id.txtPlace);
+            txtRainFall = dialog.findViewById(R.id.txtRainFall);
+            txtTempInfor = dialog.findViewById(R.id.txtTempInfor);
+            txtWindDirection = dialog.findViewById(R.id.txtWindDirection);
+            txtWindSpeed = dialog.findViewById(R.id.txtWindSpeed);
+
+            txtHumidity.setText(nearbyUsers1.getHumidity());
+            txtManufacturer.setText(nearbyUsers1.getManufacturer());
+            txtPlace.setText(nearbyUsers1.getPlace());
+            txtRainFall.setText(nearbyUsers1.getRainFall());
+            txtTempInfor.setText(nearbyUsers1.getTemperature());
+            txtWindDirection.setText(nearbyUsers1.getWindDirection());
+            txtWindSpeed.setText(nearbyUsers1.getWindSpeed());
+
+        }
+        dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;

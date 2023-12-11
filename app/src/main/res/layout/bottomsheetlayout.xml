@@ -7,13 +7,13 @@
 
 
     <TextView
-        android:id="@+id/choosetxt"
+        android:id="@+id/txtTestAcount"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_marginTop="5dp"
-        android:text="INFORMATION"
+        android:text="LIGHT"
         android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_bright"
+        android:textColor="#C107EC"
         android:textSize="20dp"
         android:textStyle="bold" />
 
@@ -43,8 +43,8 @@
             android:layout_height="wrap_content"
             android:text=""
             android:layout_gravity="center"
-            android:layout_marginLeft="100dp"
-            android:textColor="@color/blue_dark"
+            android:layout_marginLeft="140dp"
+            android:textColor="#C107EC"
             android:textSize="15sp" />
 
     </LinearLayout>
@@ -74,9 +74,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:layout_marginLeft="80dp"
+            android:layout_marginLeft="85dp"
             android:layout_gravity="center"
-            android:textColor="@color/blue_dark"
+            android:textColor="#C107EC"
             android:textSize="15sp"/>
 
     </LinearLayout>
@@ -106,9 +106,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="50dp"
             android:layout_gravity="center"
-            android:textColor="@color/blue_dark"
+            android:textColor="#C107EC"
             android:textSize="15sp"/>
 
 
@@ -132,17 +132,18 @@
             android:text="On off"
             android:layout_marginLeft="30dp"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="#FFFFFF"
             android:textSize="15sp"/>
+
         <TextView
             android:id="@+id/txtOnOff"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:layout_marginLeft="135dp"
             android:layout_gravity="center"
-            android:textColor="@color/blue_dark"
-            android:textSize="15sp"/>
+            android:layout_marginLeft="140dp"
+            android:text=""
+            android:textColor="#C107EC"
+            android:textSize="15sp" />
 
     </LinearLayout>
 

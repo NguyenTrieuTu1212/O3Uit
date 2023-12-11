@@ -53,7 +53,6 @@ public class DataWeather {
         float ftemp = Float.valueOf(stemp);
         int roundedTemperature = Math.round(ftemp);
         return String.valueOf(roundedTemperature);
-        /*return formatDataWeather("temp");*/
     }
 
     public String getMaxTemperature(){
@@ -129,7 +128,7 @@ public class DataWeather {
         return String.valueOf(attributes.getAsJsonObject("data")
                 .getAsJsonObject("value")
                 .getAsJsonObject("rain")
-                .get("1h"));
+                .get("1h").getAsFloat());
     }
 
 

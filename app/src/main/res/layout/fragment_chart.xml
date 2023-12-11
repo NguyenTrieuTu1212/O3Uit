@@ -8,19 +8,6 @@
     android:background="@color/background"
     tools:context=".ChartFragment">
 
-    <TextView
-        android:id="@+id/txtTest"
-        android:layout_width="248dp"
-        android:layout_height="30dp"
-        android:text="Hello"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.438"></TextView>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputAttributteName"
