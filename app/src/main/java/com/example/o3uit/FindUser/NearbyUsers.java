@@ -1,10 +1,22 @@
 package com.example.o3uit.FindUser;
 
+import com.example.o3uit.Map.MapModel;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 import com.mapbox.geojson.Point;
 
 public class NearbyUsers {
+
+    public static NearbyUsers nearbyUsers = null;
+
+    public static NearbyUsers getNearbyUsers() {
+        return nearbyUsers;
+    }
+
+    public static void setNearbyUsers(NearbyUsers nearbyUsersRef) {
+        nearbyUsers = nearbyUsersRef;
+    }
+
     @SerializedName("id")
     public String idUserNearby;
     @SerializedName("version")
@@ -27,39 +39,27 @@ public class NearbyUsers {
     public JsonObject attributesUserNearby;
 
 
-    public float geLocation() {
-        return  attributesUserNearby
-                .getAsJsonObject("location")
-                .getAsJsonObject("value")
-                .getAsJsonArray("coordinates").
-                get(0).getAsFloat();
-
-    }
-
     public String getIdUserNearby() {
         return idUserNearby;
     }
 
-    public String getNameUserNearby() {
-        return nameUserNearby;
+    public Point geLocation() {
+        float lng = attributesUserNearby
+                .getAsJsonObject("location")
+                .getAsJsonObject("value")
+                .getAsJsonArray("coordinates").
+                get(0).getAsFloat();
+        float lat = attributesUserNearby
+                .getAsJsonObject("location")
+                .getAsJsonObject("value")
+                .getAsJsonArray("coordinates").
+                get(1).getAsFloat();
+        return Point.fromLngLat(lng,lat);
     }
 
-    public String getTemp(){
-        return String.valueOf(attributesUserNearby
-                .getAsJsonObject("temperature")
-                .get("value"));
-    }
-    public String getHuminity(){
-        return String.valueOf(attributesUserNearby
-                .getAsJsonObject("humidity")
-                .get("value"));
-    }
 
-    public String getPlace(){
-        return String.valueOf(attributesUserNearby
-                .getAsJsonObject("place")
-                .get("value"));
-    }
+
+
 
 
 }

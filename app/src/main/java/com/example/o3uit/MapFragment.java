@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 
 import com.example.o3uit.FindUser.NearbyUsers;
+import com.example.o3uit.FindUser.NearbyUsersCallback;
 import com.example.o3uit.Map.MapModel;
 import com.example.o3uit.Service.ApiService;
 import com.example.o3uit.Service.RetrofitClient;
@@ -69,6 +70,8 @@ import retrofit2.Response;
 public class MapFragment extends Fragment {
 
     MapModel mapData;
+    NearbyUsers nearbyUsers1 = null;
+    NearbyUsers nearbyUsers2 = null;
     MapView mapView;
     static MapboxMap mapboxMap;
     ApiService apiServiceMapData;
@@ -78,8 +81,12 @@ public class MapFragment extends Fragment {
     AnnotationPlugin annoPlugin;
     PointAnnotationManager pointAnnoManager;
 
+    Point pointUser1;
+    Point pointUser2;
 
-    float lng;
+
+
+
 
 
 
@@ -100,7 +107,11 @@ public class MapFragment extends Fragment {
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             activityResultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION);
         }
+
+
         GetDataMap();
+        GetUserNearBy("5zI6XqkQVSfdgOrZ1MyWEf",Token.getToken());
+        GetUserNearBy("6iWtSbgqMQsVq8RPkJJ9vo",Token.getToken());
         DrawMap();
         return view;
     }
@@ -129,7 +140,7 @@ public class MapFragment extends Fragment {
     }
 
 
-    private void GetUserNearBy(String assetId,String token){
+    private void GetUserNearBy(String assetId, String token){
 
         apiServiceFindUserNearBy = RetrofitClient.getClient().create(ApiService.class);
 
@@ -137,8 +148,7 @@ public class MapFragment extends Fragment {
         call.enqueue(new Callback<NearbyUsers>() {
             @Override
             public void onResponse(Call<NearbyUsers> call, Response<NearbyUsers> response) {
-                NearbyUsers nearbyUsers = response.body();
-                Toast.makeText(getActivity(),String.valueOf(nearbyUsers.geLocation()),Toast.LENGTH_SHORT).show();
+                NearbyUsers.setNearbyUsers(response.body());
             }
 
             @Override
@@ -172,8 +182,9 @@ public class MapFragment extends Fragment {
     private void setMapView() {
 
         mapData = MapModel.getMapObj();
+        nearbyUsers1 =NearbyUsers.getNearbyUsers();
         mapboxMap = mapView.getMapboxMap();
-        Point point = Point.fromLngLat(106.80280655508835, 10.869778736885038);
+        /*Point point = Point.fromLngLat(106.80280655508835, 10.869778736885038);*/
         Point point1 = Point.fromLngLat(106.80345028525176, 10.869905172970164);
         if (mapboxMap != null) {
             mapboxMap.loadStyleJson(Objects.requireNonNull(new Gson().toJson(mapData)), style -> {
@@ -185,13 +196,12 @@ public class MapFragment extends Fragment {
                 pointAnnoManager = (PointAnnotationManager) annoPlugin.createAnnotationManager(AnnotationType.PointAnnotation, annoConfig);
                 pointAnnoManager.addClickListener(pointAnnotation -> {
                     String id = Objects.requireNonNull(pointAnnotation.getData()).getAsJsonObject().get("id").getAsString();
-                    GetUserNearBy(id, Token.getToken());
                     showDialog();
                     return true;
                 });
 
                 // Create point annotations
-                createPointAnnotation(point, "5zI6XqkQVSfdgOrZ1MyWEf", R.drawable.baseline_location_on_24);
+                createPointAnnotation(nearbyUsers1.geLocation(), "5zI6XqkQVSfdgOrZ1MyWEf", R.drawable.baseline_location_on_24);
                 createPointAnnotation(point1, "6iWtSbgqMQsVq8RPkJJ9vo", R.drawable.baseline_location_on_24);
 
                 // Set camera values
