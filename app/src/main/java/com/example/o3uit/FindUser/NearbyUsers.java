@@ -59,7 +59,72 @@ public class NearbyUsers {
 
 
 
+    public String getEmail(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("email")
+                .get("value").getAsString());
+    }
 
 
+    public String getColourTemperature(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("colourTemperature")
+                .get("value").getAsInt());
+    }
+
+    public String getBrightness(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("brightness")
+                .get("value").getAsInt());
+    }
+
+    public String getOnOff(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("onOff")
+                .get("value").getAsBoolean());
+    }
+
+
+    public String getTemperature(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("temperature")
+                .get("value").getAsFloat());
+    }
+
+    public String getHumidity(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("humidity")
+                .get("value").getAsInt());
+    }
+
+    public String getPlace(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("place")
+                .get("value").getAsString());
+    }
+
+    public String getManufacturer(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("manufacturer")
+                .get("value").getAsString());
+    }
+
+    public String getWindDirection(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("windDirection")
+                .get("value").getAsInt());
+    }
+
+    public String getWindSpeed(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("windSpeed")
+                .get("value").getAsFloat());
+    }
+
+    public String getRainFall(){
+        return String.valueOf(attributesUserNearby
+                .getAsJsonObject("rainfall")
+                .get("value").getAsFloat());
+    }
 
 }

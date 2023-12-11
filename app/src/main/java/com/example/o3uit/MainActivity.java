@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.o3uit.ModelLogin.Username;
 import com.example.o3uit.Token.Token;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity  {
 
         String token = getIntent().getStringExtra("token");
         Token.SetToken(token);
+
+        String userName = getIntent().getStringExtra("Username");
+        Username.setName(userName);
 
         // Khởi tạo viewPageFragment để có thể hiển thị 3 fragment dưới dạng view paper
         viewPageFragment = new ViewPageFragment(getSupportFragmentManager(), FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

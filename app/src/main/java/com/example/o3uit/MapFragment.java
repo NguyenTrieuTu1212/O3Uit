@@ -30,6 +30,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -59,6 +60,8 @@ import com.mapbox.maps.plugin.logo.LogoPlugin;
 import com.mapbox.maps.plugin.scalebar.ScaleBarPlugin;
 
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -72,6 +75,9 @@ public class MapFragment extends Fragment {
     MapModel mapData;
     NearbyUsers nearbyUsers1 = null;
     NearbyUsers nearbyUsers2 = null;
+
+    String assetIdDefautWeather= "5zI6XqkQVSfdgOrZ1MyWEf";
+    String assetIdTest="6iWtSbgqMQsVq8RPkJJ9vo";
     MapView mapView;
     static MapboxMap mapboxMap;
     ApiService apiServiceMapData;
@@ -85,8 +91,7 @@ public class MapFragment extends Fragment {
     Point pointUser2;
 
 
-
-
+    TextView txtEmailInfor,txtBrightness,txtcolourTemperature,txtonOff;
 
 
 
@@ -104,18 +109,17 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         mapView = view.findViewById(R.id.mapView);
+
         if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             activityResultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
 
         GetDataMap();
-        GetUserNearBy("5zI6XqkQVSfdgOrZ1MyWEf",Token.getToken());
-        GetUserNearBy("6iWtSbgqMQsVq8RPkJJ9vo",Token.getToken());
+        GetUserNearbyLocation();
         DrawMap();
         return view;
     }
-
 
 
 
@@ -139,53 +143,45 @@ public class MapFragment extends Fragment {
         });
     }
 
-
-    private void GetUserNearBy(String assetId, String token){
-
-        apiServiceFindUserNearBy = RetrofitClient.getClient().create(ApiService.class);
-
-        Call<NearbyUsers> call = apiServiceFindUserNearBy.getUsers(assetId, "Bearer "+ token);
-        call.enqueue(new Callback<NearbyUsers>() {
+    private void GetUserNearbyLocation(){
+        GetUserNearBy(assetIdDefautWeather, Token.getToken(), new NearbyUsersCallback() {
             @Override
-            public void onResponse(Call<NearbyUsers> call, Response<NearbyUsers> response) {
-                NearbyUsers.setNearbyUsers(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<NearbyUsers> call, Throwable t) {
-                Log.d("API CALL", t.getMessage().toString());
-
+            public void onDataFetchComplete() {
+                pointUser1 = nearbyUsers1.geLocation();
             }
         });
-
+        GetUserNearBy(assetIdTest, Token.getToken(), new NearbyUsersCallback() {
+            @Override
+            public void onDataFetchComplete() {
+                pointUser2 = nearbyUsers2.geLocation();
+            }
+        });
     }
 
 
+    private void DrawMap() {
+        mapView.setVisibility(View.INVISIBLE);
 
-   private void DrawMap() {
-       mapView.setVisibility(View.INVISIBLE);
+        new Thread(() -> {
+            while (!MapModel.isReady) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
 
-       new Thread(() -> {
-           while (!MapModel.isReady) {
-               try {
-                   Thread.sleep(100);
-               } catch (InterruptedException e) {
-                   e.printStackTrace();
-               }
-           }
-
-           requireActivity().runOnUiThread(() -> setMapView());
-       }).start();
-   }
+            requireActivity().runOnUiThread(() -> setMapView());
+        }).start();
+    }
 
 
     private void setMapView() {
 
         mapData = MapModel.getMapObj();
-        nearbyUsers1 =NearbyUsers.getNearbyUsers();
         mapboxMap = mapView.getMapboxMap();
         /*Point point = Point.fromLngLat(106.80280655508835, 10.869778736885038);*/
-        Point point1 = Point.fromLngLat(106.80345028525176, 10.869905172970164);
+        /*Point point1 = Point.fromLngLat(106.80345028525176, 10.869905172970164);*/
         if (mapboxMap != null) {
             mapboxMap.loadStyleJson(Objects.requireNonNull(new Gson().toJson(mapData)), style -> {
                 style.removeStyleLayer("poi-level-1");
@@ -196,13 +192,18 @@ public class MapFragment extends Fragment {
                 pointAnnoManager = (PointAnnotationManager) annoPlugin.createAnnotationManager(AnnotationType.PointAnnotation, annoConfig);
                 pointAnnoManager.addClickListener(pointAnnotation -> {
                     String id = Objects.requireNonNull(pointAnnotation.getData()).getAsJsonObject().get("id").getAsString();
-                    showDialog();
+                    GetUserNearBy(id, Token.getToken(), new NearbyUsersCallback() {
+                        @Override
+                        public void onDataFetchComplete() {
+                        }
+                    });
+                    showDialog(id);
                     return true;
                 });
 
                 // Create point annotations
-                createPointAnnotation(nearbyUsers1.geLocation(), "5zI6XqkQVSfdgOrZ1MyWEf", R.drawable.baseline_location_on_24);
-                createPointAnnotation(point1, "6iWtSbgqMQsVq8RPkJJ9vo", R.drawable.baseline_location_on_24);
+                createPointAnnotation(pointUser1, assetIdDefautWeather, R.drawable.baseline_location_on_24);
+                createPointAnnotation(pointUser2, assetIdTest, R.drawable.baseline_location_on_24);
 
                 // Set camera values
                 setCameraValues();
@@ -214,6 +215,7 @@ public class MapFragment extends Fragment {
             });
         }
     }
+
 
     private void createPointAnnotation(Point point, String id, int iconResource) {
         ArrayList<PointAnnotationOptions> markerList = new ArrayList<>();
@@ -244,6 +246,8 @@ public class MapFragment extends Fragment {
 
         return bitmap;
     }
+
+
     private void setCameraValues() {
         if (mapboxMap != null) {
             mapboxMap.setCamera(
@@ -264,20 +268,52 @@ public class MapFragment extends Fragment {
     }
 
 
-    private void showDialog() {
+
+    private void GetUserNearBy(String assetId, String token, NearbyUsersCallback listener){
+        apiServiceFindUserNearBy = RetrofitClient.getClient().create(ApiService.class);
+        Call<NearbyUsers> call = apiServiceFindUserNearBy.getUsers(assetId, "Bearer "+ token);
+        call.enqueue(new Callback<NearbyUsers>() {
+            @Override
+            public void onResponse(Call<NearbyUsers> call, Response<NearbyUsers> response) {
+                if (assetId.equals("5zI6XqkQVSfdgOrZ1MyWEf")) {
+                    nearbyUsers1 = response.body();
+                } else if (assetId.equals("6iWtSbgqMQsVq8RPkJJ9vo")) {
+                    nearbyUsers2 = response.body();
+                }
+                listener.onDataFetchComplete();
+            }
+
+            @Override
+            public void onFailure(Call<NearbyUsers> call, Throwable t) {
+                Log.d("API CALL", t.getMessage().toString());
+            }
+        });
+    }
+
+
+
+
+
+
+    private void showDialog(String idUser) {
 
         final Dialog dialog = new Dialog(getActivity());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.bottomsheetlayout);
 
-        LinearLayout editLayout = dialog.findViewById(R.id.layoutEdit);
-        LinearLayout shareLayout = dialog.findViewById(R.id.layoutShare);
-        LinearLayout uploadLayout = dialog.findViewById(R.id.layoutUpload);
-        LinearLayout printLayout = dialog.findViewById(R.id.layoutPrint);
+        if(idUser.equals(assetIdTest)){
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setContentView(R.layout.bottomsheetlayout);
+            txtEmailInfor = dialog.findViewById(R.id.txtInforEmail);
+            txtBrightness = dialog.findViewById(R.id.txtInforBrightness);
+            txtcolourTemperature = dialog.findViewById(R.id.txtCoulourTemp);
+            txtonOff = dialog.findViewById(R.id.txtOnOff);
 
+            txtEmailInfor.setText(nearbyUsers2.getEmail());
+            txtBrightness.setText(nearbyUsers2.getBrightness());
+            txtcolourTemperature.setText(nearbyUsers2.getColourTemperature());
+            txtonOff.setText(nearbyUsers2.getOnOff());
+            dialog.show();
+        }
 
-
-        dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
@@ -285,54 +321,7 @@ public class MapFragment extends Fragment {
 
     }
 
-    /*private void setMapView() {
-        mapData = MapModel.getMapObj();
-        ScaleBarPlugin scaleBarPlugin = mapView.getPlugin(Plugin.MAPBOX_SCALEBAR_PLUGIN_ID);
-        assert scaleBarPlugin != null;
-        scaleBarPlugin.setEnabled(false);
-        LogoPlugin logoPlugin = mapView.getPlugin(Plugin.MAPBOX_LOGO_PLUGIN_ID);
-        assert logoPlugin != null;
-        logoPlugin.setEnabled(false);
-        AttributionPlugin attributionPlugin = mapView.getPlugin(Plugin.MAPBOX_ATTRIBUTION_PLUGIN_ID);
-        assert attributionPlugin != null;
-        attributionPlugin.setEnabled(false);
 
-        mapboxMap = mapView.getMapboxMap();
-        mapboxMap.loadStyleJson(Objects.requireNonNull(new Gson().toJson(mapData)), style -> {
-
-            style.removeStyleLayer("poi-level-1");
-            style.removeStyleLayer("highway-name-major");
-            AnnotationPlugin annoPlugin = AnnotationPluginImplKt.getAnnotations(mapView);
-            AnnotationConfig annoConfig = new AnnotationConfig("map_annotation");
-            PointAnnotationManager pointAnnoManager = (PointAnnotationManager) annoPlugin.createAnnotationManager(AnnotationType.PointAnnotation, annoConfig);
-
-            pointAnnoManager.addClickListener(pointAnnotation -> {
-                String id = Objects.requireNonNull(pointAnnotation.getData()).getAsJsonObject().get("id").getAsString();
-                return true;
-            });
-
-            ArrayList<PointAnnotationOptions> markerList = new ArrayList<>();
-            pointAnnoManager.create(markerList);
-        });
-        mapboxMap.setCamera(
-                new CameraOptions.Builder()
-                        .center(mapData.getCenter())
-                        .zoom(mapData.getZoom())
-                        .build()
-        );
-
-        mapboxMap.setBounds(
-                new CameraBoundsOptions.Builder()
-                        .minZoom(mapData.getMinZoom())
-                        .maxZoom(mapData.getMaxZoom())
-                        .bounds(mapData.getBounds())
-                        .build()
-        );
-
-        CameraAnimationsPlugin cameraAnimationsPlugin = mapView.getPlugin(Plugin.MAPBOX_CAMERA_PLUGIN_ID);
-        assert cameraAnimationsPlugin != null;
-        mapView.setVisibility(View.VISIBLE);
-    }*/
 
 
 

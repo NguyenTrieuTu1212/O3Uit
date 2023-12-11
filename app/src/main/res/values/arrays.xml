@@ -4,6 +4,7 @@
         <item>Temperature</item>
         <item>Humidity</item>
         <item>WindSpeed</item>
+        <item>RainFall</item>
     </string-array>
 
 

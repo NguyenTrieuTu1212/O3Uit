@@ -81,7 +81,8 @@ public class ChartFragment extends Fragment {
 
     private String typeTempAttribute ="Temperature",
             typeHumidityAttribute ="Humidity",
-            typeWindSpeedAttribute="WindSpeed";
+            typeWindSpeedAttribute="WindSpeed",
+            typeRainFallAttribute="RainFall";
 
     private String typeTimeHour ="Hour",
             typeTimeWeek ="Week",
@@ -158,6 +159,8 @@ public class ChartFragment extends Fragment {
             attributeName ="humidity";
         if(typeAttribute.equals(typeWindSpeedAttribute))
             attributeName ="windSpeed";
+        if(typeAttribute.equals(typeRainFallAttribute))
+            attributeName ="rainfall";
     }
     
     public void GetDataPointFromJson(String token,String fromTime, String toTime, String assetId,String attributeName) {

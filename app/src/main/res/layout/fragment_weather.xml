@@ -11,16 +11,33 @@
     tools:layout_editor_absoluteY="0dp">
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <ImageView
         android:id="@+id/btnMenu"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/button_menu"
+        android:background="@drawable/user"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/txtUsername"
+        android:layout_width="86dp"
+        android:layout_height="23dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="17dp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.258"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.046">
+
+    </TextView>
 
     <View
         android:id="@+id/view"
@@ -90,10 +107,12 @@
         android:textColor="@color/white"
         android:textSize="12dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/view2"
         app:layout_constraintHorizontal_bias="0.735"
         app:layout_constraintStart_toStartOf="@+id/view2"
-        app:layout_constraintTop_toTopOf="@+id/view2" />
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/txtTime"
@@ -146,17 +165,18 @@
         android:id="@+id/txtAmountOfRain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="284dp"
-        android:layout_marginBottom="0dp"
-        android:textStyle="bold"
         android:fontFamily="sans-serif"
+        android:gravity="center"
         android:text=""
         android:textColor="@color/blue"
         android:textSize="14dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="@+id/view2"
+        app:layout_constraintHorizontal_bias="0.203"
+        app:layout_constraintStart_toStartOf="@+id/view2"
         app:layout_constraintTop_toBottomOf="@+id/imageRainFall"
-        app:layout_constraintVertical_bias="0.444" />
+        app:layout_constraintVertical_bias="0.538" />
 
     <TextView
         android:id="@+id/txtTemperature"
@@ -311,16 +331,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imgSunset"
         app:layout_constraintVertical_bias="0.26" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch1"
-        android:layout_width="95dp"
-        android:layout_height="82dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:thumb="@drawable/thumb"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:track="@drawable/track" />
+
 
 
 

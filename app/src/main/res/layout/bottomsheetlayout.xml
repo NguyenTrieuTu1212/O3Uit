@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/dialog_bg">
 
+
     <TextView
         android:id="@+id/choosetxt"
         android:layout_width="match_parent"
@@ -36,6 +37,15 @@
             android:textColor="@color/white"
             android:textStyle="bold"
             android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/txtInforEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_gravity="center"
+            android:layout_marginLeft="100dp"
+            android:textColor="@color/blue_dark"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
@@ -54,10 +64,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Brightness"
+            android:text="Brightness(%)"
             android:layout_marginLeft="30dp"
             android:textColor="@color/white"
             android:textStyle="bold"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/txtInforBrightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginLeft="80dp"
+            android:layout_gravity="center"
+            android:textColor="@color/blue_dark"
             android:textSize="15sp"/>
 
     </LinearLayout>
@@ -77,11 +96,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Upload"
+            android:text="Colour temperature"
             android:layout_marginLeft="30dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/txtCoulourTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginLeft="40dp"
+            android:layout_gravity="center"
+            android:textColor="@color/blue_dark"
+            android:textSize="15sp"/>
+
 
     </LinearLayout>
 
@@ -100,10 +129,19 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Print"
+            android:text="On off"
             android:layout_marginLeft="30dp"
             android:textStyle="bold"
             android:textColor="@color/white"
+            android:textSize="15sp"/>
+        <TextView
+            android:id="@+id/txtOnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginLeft="135dp"
+            android:layout_gravity="center"
+            android:textColor="@color/blue_dark"
             android:textSize="15sp"/>
 
     </LinearLayout>

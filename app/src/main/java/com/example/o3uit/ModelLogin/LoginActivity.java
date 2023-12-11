@@ -86,8 +86,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Asset result = response.body();
                     String token = result.getAccessToken();
+                    String userName = edtUsername.getText().toString();
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     intent.putExtra("token",token);
+                    intent.putExtra("Username",userName);
                     startActivity(intent);
                     finishAffinity();
                 } else {

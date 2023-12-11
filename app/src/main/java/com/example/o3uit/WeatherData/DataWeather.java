@@ -125,6 +125,12 @@ public class DataWeather {
         return capitalizeFirstLetter(stateWeather);
     }
 
+    public String getRainFall(){
+        return String.valueOf(attributes.getAsJsonObject("data")
+                .getAsJsonObject("value")
+                .getAsJsonObject("rain")
+                .get("1h"));
+    }
 
 
     public static String convertUnixTimestamp(String unixTimestamp) {
@@ -135,6 +141,8 @@ public class DataWeather {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         return dateTime.format(formatter);
     }
+
+
 
     public String capitalizeFirstLetter(String str) {
         if(str == null || str.isEmpty()) {

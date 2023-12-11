@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.o3uit.ModelLogin.Username;
 import com.example.o3uit.Service.ApiService;
 import com.example.o3uit.Service.RetrofitClient;
 import com.example.o3uit.Token.Token;
@@ -35,7 +36,7 @@ public class WeatherFragment extends Fragment {
     //String token="eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoREkwZ2hyVlJvaE5zVy1wSXpZeDBpT2lHMzNlWjJxV21sRk4wWGE1dWkwIn0.eyJleHAiOjE3MDIwMDM1NTksImlhdCI6MTcwMTkxNzE2MCwiYXV0aF90aW1lIjoxNzAxOTE3MTU5LCJqdGkiOiJiZGVlMjY0MC1hODNlLTQzMTQtOGRkMS0wNmFjODVhMzllZDAiLCJpc3MiOiJodHRwczovL3Vpb3QuaXh4Yy5kZXYvYXV0aC9yZWFsbXMvbWFzdGVyIiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjRlM2E0NDk2LTJmMTktNDgxMy1iZjAwLTA5NDA3ZDFlZThjYiIsInR5cCI6IkJlYXJlciIsImF6cCI6Im9wZW5yZW1vdGUiLCJzZXNzaW9uX3N0YXRlIjoiY2U5YThmNGYtYWU5NS00YWU3LWFiYjYtNjFjMjBlNmMyMzQ2IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwczovL3Vpb3QuaXh4Yy5kZXYiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtbWFzdGVyIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7Im9wZW5yZW1vdGUiOnsicm9sZXMiOlsicmVhZDptYXAiLCJyZWFkOnJ1bGVzIiwicmVhZDppbnNpZ2h0cyIsInJlYWQ6YXNzZXRzIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJjZTlhOGY0Zi1hZTk1LTRhZTctYWJiNi02MWMyMGU2YzIzNDYiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJGaXJzdCBOYW1lIExhc3QgbmFtZSIsInByZWZlcnJlZF91c2VybmFtZSI6InVzZXIiLCJnaXZlbl9uYW1lIjoiRmlyc3QgTmFtZSIsImZhbWlseV9uYW1lIjoiTGFzdCBuYW1lIiwiZW1haWwiOiJ1c2VyQGl4eGMuZGV2In0.XjdvBvFIBlrHI0EIY-_BZldpupCQd092gau7LFbR8g7lAi1wc_36fl7KokHKe0wsa_Ma7Am_K7HI3idXxjaMLwuU3kFt94RaOfcIm3IpyoSHgUwTUM72Hj0OsyboiwM-GDy426te7tzaB3ZS6KnjOOYWC8aOUlGr5GZJAslSL3GaALGb7_XWMIddOzFk-a6YC2_qPdrH-jzrzPx7twY37mjMrMPGPjreZZ8AGNzsLGxI9ioZUXRVWH3bjho4t21kEtYjvSCxxLAv-yHU4IUPairDfU_hYH2j8T2R7YMqByJwUgeZj_QaWGCBlS9jXCfOW_Db8KLdYjhz17J_NWR1Yg";
 
 
-    private TextView txtTempeture,txtHumidity,txtWindSpeed,txtAmoutOfRain,txtSunrise,txtSunset,txtStatusWeather,txtTime;
+    private TextView txtTempeture,txtHumidity,txtWindSpeed,txtAmoutOfRain,txtSunrise,txtSunset,txtStatusWeather,txtTime,txtUsername;
 
     private ImageView imgStatusWeather;
 
@@ -58,7 +59,11 @@ public class WeatherFragment extends Fragment {
         txtSunset = view.findViewById(R.id.txtSunset);
         txtStatusWeather = view.findViewById(R.id.txtStatusWeather);
         txtTime = view.findViewById(R.id.txtTime);
+        txtUsername = view.findViewById(R.id.txtUsername);
         imgStatusWeather = view.findViewById(R.id.imgStatusWeather);
+
+
+        txtUsername.setText("Hello, "+ Username.getName());
         handler = new Handler();
         GetDataWeather(Token.getToken());
         handler.postDelayed(runnableGetDataWeather, 3600000);
@@ -94,10 +99,13 @@ public class WeatherFragment extends Fragment {
                 txtStatusWeather.setText(dataWeather.getStatusWeather());
                 txtTime.setText(String.valueOf(getCurrentDayOfWeek()));
                 SetIcon(dataWeather.getIconWeather());
-
+                if (!dataWeather.attributes.getAsJsonObject("data").getAsJsonObject("value").has("rain")) {
+                    txtAmoutOfRain.setText("0 mm");
+                } else {
+                    txtAmoutOfRain.setText(dataWeather.getRainFall());
+                }
 
             }
-
             @Override
             public void onFailure(Call<DataWeather> call, Throwable t) {
                 Log.d("API CALL", t.getMessage().toString());
