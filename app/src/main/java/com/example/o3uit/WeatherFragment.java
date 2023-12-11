@@ -127,14 +127,15 @@ public class WeatherFragment extends Fragment {
         if(iconCode.equals("01d")) imgStatusWeather.setImageResource(R.drawable.clear_sky);
         if(iconCode.equals("01n")) imgStatusWeather.setImageResource(R.drawable.clear_sky_night);
 
-
         if(iconCode.equals("02d")) imgStatusWeather.setImageResource(R.drawable.sun);
         if(iconCode.equals("02n")) imgStatusWeather.setImageResource(R.drawable.moon);
+
+        if(iconCode.equals("09d")) imgStatusWeather.setImageResource(R.drawable.sun_shower);
+        if(iconCode.equals("09n")) imgStatusWeather.setImageResource(R.drawable.night_shower);
 
         if(iconCode.equals("03d") || iconCode.equals("03n")) imgStatusWeather.setImageResource(R.drawable.scattered_clouds);
         if(iconCode.equals("04d") || iconCode.equals("04n")) imgStatusWeather.setImageResource(R.drawable.scattered_clouds);
 
-        if(iconCode.equals("09d")) imgStatusWeather.setImageResource(R.drawable.sun_shower);
         if(iconCode.equals("10d") || iconCode.equals("10n")) imgStatusWeather.setImageResource(R.drawable.rain);
         if(iconCode.equals("11d") || iconCode.equals("11n")) imgStatusWeather.setImageResource(R.drawable.storm);
     }

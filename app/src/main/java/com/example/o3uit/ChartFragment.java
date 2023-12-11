@@ -110,7 +110,6 @@ public class ChartFragment extends Fragment {
         autoCompleteTextViewTimer = view.findViewById(R.id.inputTVTimer);
         autoCompleteTextViewDialogTimer = view.findViewById(R.id.inputTVDialogTimer);
 
-        textView = view.findViewById(R.id.txtTest);
         btnShow = view.findViewById(R.id.btnShowChart);
         DisplayTimeCurrent();
 
@@ -265,7 +264,7 @@ public class ChartFragment extends Fragment {
         if(typeTimer.equals("Month")) endingTime = startTime.minus(1, ChronoUnit.MONTHS);
         if(typeTimer.equals("Year")) endingTime = startTime.minus(1, ChronoUnit.YEARS);
         fromTime = endingTime.format(formatter);
-        textView.setText("From time: "+fromTime+"\n"+ "To Time: "+toTime);
+
     }
 
 
