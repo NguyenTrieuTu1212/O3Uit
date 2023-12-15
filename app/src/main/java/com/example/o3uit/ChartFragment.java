@@ -35,7 +35,11 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -93,6 +97,7 @@ public class ChartFragment extends Fragment {
 
 
 
+    float rotationAngle =-45f;
 
     TextView textView;
 
@@ -131,24 +136,64 @@ public class ChartFragment extends Fragment {
     }
 
 
-
-
     private void ShowChart(){
-        SelectAtributeToDrawChart();
         SelectTimerToDrawChart();
+        SelectAtributeToDrawChart();
         GetDataPointFromJson(Token.getToken(),fromTime,toTime,assetId,attributeName);
     }
 
+
     private void SelectTimerToDrawChart(){
         String typeTimer = autoCompleteTextViewTimer.getText().toString();
-        String selectTime = autoCompleteTextViewDialogTimer.getText().toString();
-        if(typeTimer.equals(typeTimeHour)) getTimes(selectTime,typeTimeHour);
-        if(typeTimer.equals(typeTimeWeek)) getTimes(selectTime,typeTimeWeek);
-        if(typeTimer.equals(typeTimeDay)) getTimes(selectTime,typeTimeDay);
-        if(typeTimer.equals(typeTimeMonth)) getTimes(selectTime,typeTimeMonth);
-        if(typeTimer.equals(typeTimeYear)) getTimes(selectTime,typeTimeYear);
+        if(typeTimer.equals(typeTimeHour)) GetDate(typeTimeHour);
+        if(typeTimer.equals(typeTimeWeek)) GetDate(typeTimeWeek);
+        if(typeTimer.equals(typeTimeDay)) GetDate(typeTimeDay);
+        if(typeTimer.equals(typeTimeMonth)) GetDate(typeTimeMonth);
+        if(typeTimer.equals(typeTimeYear)) GetDate(typeTimeYear);
     }
 
+
+    private void GetDate(String typeTimer){
+
+       /* String dateSelected = autoCompleteTextViewDialogTimer.getText().toString();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDate selectedDate = LocalDate.parse(dateSelected, formatter);
+        LocalTime currentTime = LocalTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        LocalDateTime localDateTime = selectedDate.atTime(currentTime);
+        OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.ofHours(7)); // GMT+7
+        toTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).toString(); // Convert to UTC
+        LocalDate previousDate = null;
+        if(typeTimer.equals("Day")) previousDate = selectedDate.minusDays(1);
+        if(typeTimer.equals("Week")) previousDate = selectedDate.minusWeeks(1);
+        if(typeTimer.equals("Month")) previousDate = selectedDate.minusMonths(1);
+        if(typeTimer.equals("Year")) previousDate = selectedDate.minusYears(1);
+        toTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).plusHours(1).toString();
+        localDateTime = previousDate.atTime(currentTime);
+        offsetDateTime = localDateTime.atOffset(ZoneOffset.ofHours(7)); // GMT+7
+        fromTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).toString(); // Convert to UTC*/
+
+
+        String dateSelected = autoCompleteTextViewDialogTimer.getText().toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDate selectedDate = LocalDate.parse(dateSelected, formatter);
+        LocalTime currentTime = LocalTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        LocalDateTime localDateTime = selectedDate.atTime(currentTime);
+        OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.ofHours(7)); // GMT+7
+        toTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).toString(); // Convert to UTC
+        LocalDateTime previousDateTime = null;
+
+        if(typeTimer.equals("Day")) previousDateTime = localDateTime.minusDays(1);
+        if(typeTimer.equals("Week")) previousDateTime = localDateTime.minusWeeks(1);
+        if(typeTimer.equals("Month")) previousDateTime = localDateTime.minusMonths(1);
+        if(typeTimer.equals("Year")) previousDateTime = localDateTime.minusYears(1);
+        if(typeTimer.equals("Hour")) previousDateTime = localDateTime.minusHours(1); // Added condition for "Hour"
+
+        toTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).plusHours(1).toString();
+        offsetDateTime = previousDateTime.atOffset(ZoneOffset.ofHours(7)); // GMT+7
+        fromTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).toString();
+
+    }
 
     private void SelectAtributeToDrawChart(){
         String typeAttribute = autoCompleteTextViewAtrributes.getText().toString();
@@ -161,7 +206,7 @@ public class ChartFragment extends Fragment {
         if(typeAttribute.equals(typeRainFallAttribute))
             attributeName ="rainfall";
     }
-    
+
     public void GetDataPointFromJson(String token,String fromTime, String toTime, String assetId,String attributeName) {
 
         apiService= RetrofitClient.getClient().create(ApiService.class);
@@ -207,11 +252,10 @@ public class ChartFragment extends Fragment {
             entries.add(new Entry(dataPoints.get(i).getX(), dataPoints.get(i).getY()));
         }
 
-
-
         LineDataSet lineDataSet = new LineDataSet(entries, "Nhiet do");
         lineDataSet.setDrawValues(false);
-
+        lineDataSet.setDrawFilled(true);
+        lineDataSet.setFillColor(Color.BLUE);
         lineDataSet.setLineWidth(lineWidth);
         lineDataSet.setValueTextSize(valueTextSize);
         lineDataSet.setValueTextColor(Color.WHITE);
@@ -227,6 +271,7 @@ public class ChartFragment extends Fragment {
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setAxisLineWidth(3f);
         xAxis.setTextSize(14f);
+        xAxis.setLabelRotationAngle(rotationAngle);
         xAxis.setValueFormatter(new ValueFormatter() {
             private final SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
@@ -235,7 +280,7 @@ public class ChartFragment extends Fragment {
                 return format.format(new Date((long) value));
             }
         });
-        
+
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);
 
@@ -248,46 +293,36 @@ public class ChartFragment extends Fragment {
 
         chart.setData(data);
         chart.invalidate();
-    }
+        
 
-
-
-
-    public void getTimes(String ISO8601Time,String typeTimer) {
-        toTime = ISO8601Time;
-        ZonedDateTime endingTime = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_ZONED_DATE_TIME;
-        ZonedDateTime startTime = ZonedDateTime.parse(ISO8601Time, formatter);
-        if(typeTimer.equals("Day")) endingTime = startTime.minus(1, ChronoUnit.DAYS);
-        if(typeTimer.equals("Week")) endingTime = startTime.minus(1, ChronoUnit.WEEKS);
-        if(typeTimer.equals("Hour")) endingTime = startTime.minus(1, ChronoUnit.HOURS);
-        if(typeTimer.equals("Month")) endingTime = startTime.minus(1, ChronoUnit.MONTHS);
-        if(typeTimer.equals("Year")) endingTime = startTime.minus(1, ChronoUnit.YEARS);
-        fromTime = endingTime.format(formatter);
+        // Tạo hiệu ứng cho biểu đồ
+        int animationDuration = 500;
+        chart.animateX(animationDuration);
 
     }
-
 
     private void DisplayTimeCurrent(){
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         autoCompleteTextViewDialogTimer.setText(simpleDateFormat.format(calendar.getTime()));
     }
 
     private void SelectTimer(){
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity());
-        datePickerDialog.setOnDateSetListener(new DatePickerDialog.OnDateSetListener() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                LocalDate date = LocalDate.of(year, month , dayOfMonth+1);
-                ZonedDateTime zonedDateTime = date.atStartOfDay(ZoneId.of("Asia/Ho_Chi_Minh"));
-                String formattedDate = zonedDateTime.format(DateTimeFormatter.ISO_INSTANT);
-                autoCompleteTextViewDialogTimer.setText(formattedDate);
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar selectedCalendar = Calendar.getInstance();
+                selectedCalendar.set(year, monthOfYear, dayOfMonth);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); // Thêm giờ, phút, giây
+                String selectedDate = sdf.format(selectedCalendar.getTime());
+                autoCompleteTextViewDialogTimer.setText(selectedDate);
             }
-        });
-
-        // Hiển thị DatePickerDialog
+        }, year, month, day);
         datePickerDialog.show();
     }
 
