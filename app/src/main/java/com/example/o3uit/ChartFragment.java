@@ -300,7 +300,7 @@ public class ChartFragment extends Fragment {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar selectedCalendar = Calendar.getInstance();
                 selectedCalendar.set(year, monthOfYear, dayOfMonth);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss"); // Thêm giờ, phút, giây
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                 String selectedDate = sdf.format(selectedCalendar.getTime());
                 autoCompleteTextViewDialogTimer.setText(selectedDate);
             }

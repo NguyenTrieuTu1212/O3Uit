@@ -279,11 +279,8 @@ public class MapFragment extends Fragment {
         call.enqueue(new Callback<NearbyUsers>() {
             @Override
             public void onResponse(Call<NearbyUsers> call, Response<NearbyUsers> response) {
-                if (assetId.equals("5zI6XqkQVSfdgOrZ1MyWEf")) {
-                    nearbyUsers1 = response.body();
-                } else if (assetId.equals("6iWtSbgqMQsVq8RPkJJ9vo")) {
-                    nearbyUsers2 = response.body();
-                }
+                if (assetId.equals("5zI6XqkQVSfdgOrZ1MyWEf")) nearbyUsers1 = response.body();
+                else if (assetId.equals("6iWtSbgqMQsVq8RPkJJ9vo")) nearbyUsers2 = response.body();
                 listener.onDataFetchComplete();
             }
 
@@ -341,11 +338,5 @@ public class MapFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
 
     }
-
-
-
-
-
-
 
 }

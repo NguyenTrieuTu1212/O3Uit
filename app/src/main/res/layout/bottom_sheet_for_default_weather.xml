@@ -14,7 +14,7 @@
         android:layout_marginTop="5dp"
         android:text="Default Weather"
         android:textAlignment="center"
-        android:textColor="@android:color/holo_blue_bright"
+        android:textColor="@color/blue_dark"
         android:textSize="20dp"
         android:textStyle="bold" />
 

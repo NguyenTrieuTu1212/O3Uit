@@ -74,17 +74,16 @@ public class WeatherFragment extends Fragment {
     private Runnable runnableGetDataWeather = new Runnable() {
         @Override
         public void run() {
-            // Gọi hàm GetDataWeather
             GetDataWeather(Token.getToken());
             Toast.makeText(getActivity(), "Hàm Get Weather được gọi", Toast.LENGTH_SHORT).show();
-            // Lập lịch để gọi lại hàm sau mỗi 10 giây
             handler.postDelayed(this, 3600000);
         }
     };
     private void GetDataWeather(String token){
 
         apiServiceWeatherData = RetrofitClient.getClient().create(ApiService.class);
-
+        // 3xih2945Hes4yxpB15ZyKb
+        // 4EqQeQ0L4YNWNNTzvTOqjy
         Call<DataWeather> call = apiServiceWeatherData.getDataWeather("4EqQeQ0L4YNWNNTzvTOqjy", "Bearer "+ token);
         call.enqueue(new Callback<DataWeather>() {
             @Override

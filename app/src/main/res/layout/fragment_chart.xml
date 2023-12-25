@@ -18,11 +18,14 @@
         android:layout_marginEnd="25sp"
         android:layout_marginBottom="240dp"
         android:hint="Select Attribute"
+        android:textColorHint="@color/white"
+        app:boxBackgroundColor="#27293F"
         app:boxCornerRadiusBottomEnd="10sp"
         app:boxCornerRadiusBottomStart="10sp"
         app:boxCornerRadiusTopEnd="10sp"
         app:boxCornerRadiusTopStart="10sp"
-        app:boxStrokeWidth="0sp"
+        app:boxStrokeColor="@color/blue_dark"
+        app:boxStrokeWidth="1sp"
         app:boxStrokeWidthFocused="0sp"
         app:layout_constraintBottom_toTopOf="@+id/lineChart"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,7 +35,9 @@
             android:id="@+id/inputTVAttributteName"
             android:layout_width="360dp"
             android:layout_height="55dp"
+            android:backgroundTint="#27293F"
             android:inputType="none"
+            android:textColor="@android:color/white"
             app:simpleItems="@array/Attribute_list" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -46,6 +51,8 @@
         android:layout_marginEnd="25sp"
         android:layout_marginBottom="180dp"
         android:hint="Select Timer"
+        app:boxBackgroundColor="#27293F"
+        android:textColorHint="@color/white"
         app:boxCornerRadiusBottomEnd="10sp"
         app:boxCornerRadiusBottomStart="10sp"
         app:boxCornerRadiusTopEnd="10sp"
@@ -60,6 +67,8 @@
             android:id="@+id/inputTVTimer"
             android:layout_width="360dp"
             android:layout_height="55dp"
+            android:backgroundTint="#27293F"
+            android:textColor="@android:color/white"
             android:inputType="none"
             app:simpleItems="@array/Timer_list" />
 
@@ -76,6 +85,8 @@
         android:layout_marginEnd="25sp"
         android:layout_marginBottom="120dp"
         android:hint="Select Date"
+        app:boxBackgroundColor="#27293F"
+        android:textColorHint="@color/white"
         app:boxCornerRadiusBottomEnd="10sp"
         app:boxCornerRadiusBottomStart="10sp"
         app:boxCornerRadiusTopEnd="10sp"
@@ -90,7 +101,9 @@
             android:id="@+id/inputTVDialogTimer"
             android:layout_width="360dp"
             android:layout_height="55dp"
+            android:backgroundTint="#27293F"
             android:inputType="none"
+            android:textColor="@android:color/white"
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -104,7 +117,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.407"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" >
+    </com.github.mikephil.charting.charts.LineChart>
+
 
 
     <Button
@@ -117,6 +132,10 @@
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.336"></Button>
+        app:layout_constraintVertical_bias="0.336"
+        android:backgroundTint="@color/blue_dark"></Button>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
