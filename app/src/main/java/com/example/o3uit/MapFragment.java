@@ -119,7 +119,6 @@ public class MapFragment extends Fragment {
             activityResultLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
-
         GetDataMap();
         GetUserNearbyLocation();
         DrawMap();
@@ -199,8 +198,7 @@ public class MapFragment extends Fragment {
                     String id = Objects.requireNonNull(pointAnnotation.getData()).getAsJsonObject().get("id").getAsString();
                     GetUserNearBy(id, Token.getToken(), new NearbyUsersCallback() {
                         @Override
-                        public void onDataFetchComplete() {
-                        }
+                        public void onDataFetchComplete() {}
                     });
                     showDialog(id);
                     return true;
