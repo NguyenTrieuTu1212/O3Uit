@@ -137,11 +137,23 @@ public class ChartFragment extends Fragment {
 
 
     private void ShowChart(){
-        SelectTimerToDrawChart();
         SelectAtributeToDrawChart();
+        SelectTimerToDrawChart();
         GetDataPointFromJson(Token.getToken(),fromTime,toTime,assetId,attributeName);
     }
 
+
+    private void SelectAtributeToDrawChart(){
+        String typeAttribute = autoCompleteTextViewAtrributes.getText().toString();
+        if(typeAttribute.equals(typeTempAttribute))
+            attributeName = "temperature";
+        if(typeAttribute.equals(typeHumidityAttribute))
+            attributeName ="humidity";
+        if(typeAttribute.equals(typeWindSpeedAttribute))
+            attributeName ="windSpeed";
+        if(typeAttribute.equals(typeRainFallAttribute))
+            attributeName ="rainfall";
+    }
 
     private void SelectTimerToDrawChart(){
         String typeTimer = autoCompleteTextViewTimer.getText().toString();
@@ -154,25 +166,6 @@ public class ChartFragment extends Fragment {
 
 
     private void GetDate(String typeTimer){
-
-       /* String dateSelected = autoCompleteTextViewDialogTimer.getText().toString();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDate selectedDate = LocalDate.parse(dateSelected, formatter);
-        LocalTime currentTime = LocalTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
-        LocalDateTime localDateTime = selectedDate.atTime(currentTime);
-        OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.ofHours(7)); // GMT+7
-        toTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).toString(); // Convert to UTC
-        LocalDate previousDate = null;
-        if(typeTimer.equals("Day")) previousDate = selectedDate.minusDays(1);
-        if(typeTimer.equals("Week")) previousDate = selectedDate.minusWeeks(1);
-        if(typeTimer.equals("Month")) previousDate = selectedDate.minusMonths(1);
-        if(typeTimer.equals("Year")) previousDate = selectedDate.minusYears(1);
-        toTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).plusHours(1).toString();
-        localDateTime = previousDate.atTime(currentTime);
-        offsetDateTime = localDateTime.atOffset(ZoneOffset.ofHours(7)); // GMT+7
-        fromTime = offsetDateTime.withOffsetSameInstant(ZoneOffset.UTC).toString(); // Convert to UTC*/
-
 
         String dateSelected = autoCompleteTextViewDialogTimer.getText().toString();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
@@ -195,17 +188,6 @@ public class ChartFragment extends Fragment {
 
     }
 
-    private void SelectAtributeToDrawChart(){
-        String typeAttribute = autoCompleteTextViewAtrributes.getText().toString();
-        if(typeAttribute.equals(typeTempAttribute))
-            attributeName = "temperature";
-        if(typeAttribute.equals(typeHumidityAttribute))
-            attributeName ="humidity";
-        if(typeAttribute.equals(typeWindSpeedAttribute))
-            attributeName ="windSpeed";
-        if(typeAttribute.equals(typeRainFallAttribute))
-            attributeName ="rainfall";
-    }
 
     public void GetDataPointFromJson(String token,String fromTime, String toTime, String assetId,String attributeName) {
 
